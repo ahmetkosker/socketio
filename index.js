@@ -9,15 +9,7 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:8100",
-    methods: ["GET", "POST"],
-    transports: ["websocket", "polling"],
-    credentials: true,
-  },
-  allowEIO3: true,
-});
+const io = new Server(server);
 
 io.on("connection", (socket) => {
   let UID = socket.handshake.query["UID"];
