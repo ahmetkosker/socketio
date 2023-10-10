@@ -16,21 +16,25 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", async (socket) => {
+io.on("connection", (socket) => {
   let UID = socket.handshake.query["UID"];
+  let newStatus = "";
 
-  console.log(`${socket.id} connected with UID ${UID}`);
+  console.log("here");
 
-  socket.on("disconnect", async (socket) => {
-    try {
-      await axios
+  socket.on("ping", (status) => {
+    newStatus = status;
+  });
+
+  socket.on("disconnect", () => {
+    if (newStatus !== "Görevde") {
+      axios
         .post("https://statuschanger-lv73cppecq-ew.a.run.app", {
-          UID: UID,
+          UID,
           status: "Dışarıda",
         })
         .then((res) => console.log(res.data.status));
-    } catch (error) {
-      console.error("Error while posting data to the API:", error);
+      console.log(`${socket.id} disconnected with UID ${UID}`);
     }
   });
 });
