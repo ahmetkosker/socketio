@@ -9,14 +9,11 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-const io = require('socket.io')(server, {
+const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
-    transports: ['websocket', 'polling'],
-    credentials: true
   },
-  allowEIO3: true
 });
 
 io.on("connection", (socket) => {
