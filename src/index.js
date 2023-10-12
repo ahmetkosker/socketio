@@ -20,9 +20,17 @@ io.on("connection", (socket) => {
   let UID = socket.handshake.query['UID']
   let newStatus = ""
 
-  console.log("here")
+  axios
+    .post('https://statuschanger-lv73cppecq-ew.a.run.app', {
+      UID,
+      status: 'Çevrim içi',
+    }).then(res => console.log(res.data.status))
+
+  console.log(`${socket.id} connected with UID ${UID}`);
 
   socket.on("ping", (status) => {
+
+    console.log(`${socket.id} pinged with status ${status}`)
     newStatus = status
   });
 
@@ -33,14 +41,15 @@ io.on("connection", (socket) => {
           UID,
           status: 'Dışarıda',
         }).then(res => console.log(res.data.status))
-      console.log(`${socket.id} disconnected with UID ${UID}`);
     }
+    console.log(`${socket.id} disconnected with UID ${UID}`);
+
   });
 });
 
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the chat server");
+  res.send("Welcome to the chattttttt server");
 });
 
 server.listen(3002, () => {
